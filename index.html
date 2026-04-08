@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>刷题系统</title>
+</head>
+<body>
+
+<h2>界面设计刷题</h2>
+<p id="question"></p>
+<div id="options"></div>
+
+<button onclick="nextQuestion()">下一题</button>
+<button onclick="showWrong()">错题模式</button>
+
+<p id="result"></p>
+
+<script>
+let questions = [
+{q:"Sketch是一款什么类型工具？", options:["A.位图","B.矢量","C.修图","D.3D"], answer:"B"},
+{q:"Sketch文件后缀是？", options:["A.GIF","B.TIFF","C.sketch","D.PSD"], answer:"C"},
+{q:"生成标注插件是？", options:["A.Measure","B.Kitchen","C.Overflow","D.Isometric"], answer:"A"}
+];
+
+let index = 0;
+let wrong = [];
+
+function loadQuestion(){
+document.getElementById("question").innerText = questions[index].q;
+let html="";
+questions[index].options.forEach(opt=>{
+html += `<button onclick="check('${opt[0]}')">${opt}</button><br>`;
+});
+document.getElementById("options").innerHTML = html;
+document.getElementById("result").innerText="";
+}
+
+function check(ans){
+if(ans===questions[index].answer){
+document.getElementById("result").innerText="✅ 正确";
+}else{
+document.getElementById("result").innerText="❌ 错误";
+wrong.push(questions[index]);
+}
+}
+
+function nextQuestion(){
+index++;
+if(index>=questions.length){
+index=0;
+}
+loadQuestion();
+}
+
+function showWrong(){
+if(wrong.length>0){
+questions = wrong;
+index=0;
+loadQuestion();
+}
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
