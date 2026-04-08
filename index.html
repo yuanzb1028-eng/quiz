@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<h2 id="subject">界面设计（共3题）</h2>
+<h2 id="subject"></h2>
+<p id="progress"></p>
 <p id="question"></p>
 <div id="options"></div>
 
@@ -14,6 +15,7 @@
 <button onclick="prevQuestion()">上一题</button>
 <button onclick="nextQuestion()">下一题</button>
 <button onclick="showWrong()">错题模式</button>
+<button onclick="reset()">返回题库</button>
 
 <p id="result"></p>
 
@@ -21,24 +23,26 @@
 
 let subjects = {
 "界面设计":[
-{q:"生成标注插件是？", options:["A.Measure","B.Kitchen","C.Overflow","D.Isometric"], answer:"A"},
-{q:"Sketch是一款什么工具？", options:["A.位图","B.矢量","C.修图","D.3D"], answer:"B"},
-{q:"Sketch文件后缀是？", options:["A.GIF","B.TIFF","C.sketch","D.PSD"], answer:"C"}
+{q:"示例题1", options:["A","B","C","D"], answer:"A"},
+{q:"示例题2", options:["A","B","C","D"], answer:"B"}
 ],
-
 "数字影像":[
-{q:"Photoshop主要处理什么？", options:["A.视频","B.音频","C.图像","D.3D"], answer:"C"}
-]
+{q:"示例题", options:["A","B","C","D"], answer:"C"}
+],
+"电脑动画":[],
+"艺术概论":[]
 };
 
 let currentSubject = "界面设计";
-let questions = subjects[currentSubject];
+let originalQuestions = [...subjects[currentSubject]];
+let questions = [...originalQuestions];
 let index = 0;
 let wrong = [];
 
 function loadQuestion(){
-document.getElementById("subject").innerText = currentSubject + "（共"+questions.length+"题）";
-document.getElementById("question").innerText = (index+1)+"."+questions[index].q;
+document.getElementById("subject").innerText = currentSubject;
+document.getElementById("progress").innerText = `第 ${index+1} / ${questions.length} 题`;
+document.getElementById("question").innerText = questions[index].q;
 
 let html="";
 questions[index].options.forEach(opt=>{
@@ -71,10 +75,17 @@ loadQuestion();
 
 function showWrong(){
 if(wrong.length>0){
-questions = wrong;
+questions = [...wrong];
 index=0;
 loadQuestion();
 }
+}
+
+function reset(){
+questions = [...originalQuestions];
+wrong = [];
+index = 0;
+loadQuestion();
 }
 
 loadQuestion();
