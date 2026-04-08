@@ -6,7 +6,16 @@
 </head>
 <body>
 
-<h2 id="subject"></h2>
+<h2>选择科目</h2>
+
+<button onclick="selectSubject('界面设计')">界面设计</button>
+<button onclick="selectSubject('数字影像')">数字影像</button>
+<button onclick="selectSubject('电脑动画')">电脑动画</button>
+<button onclick="selectSubject('艺术概论')">艺术概论</button>
+
+<hr>
+
+<h3 id="subject"></h3>
 <p id="progress"></p>
 <p id="question"></p>
 <div id="options"></div>
@@ -22,24 +31,47 @@
 <script>
 
 let subjects = {
+
 "界面设计":[
-{q:"示例题1", options:["A","B","C","D"], answer:"A"},
-{q:"示例题2", options:["A","B","C","D"], answer:"B"}
+{q:"Sketch是一款什么工具？", options:["A.位图","B.矢量","C.修图","D.3D"], answer:"B"},
+{q:"Sketch文件后缀是？", options:["A.GIF","B.TIFF","C.sketch","D.PSD"], answer:"C"}
 ],
+
 "数字影像":[
-{q:"示例题", options:["A","B","C","D"], answer:"C"}
+{q:"Photoshop主要处理什么？", options:["A.视频","B.音频","C.图像","D.3D"], answer:"C"}
 ],
-"电脑动画":[],
-"艺术概论":[]
+
+"电脑动画":[
+{q:"动画的本质是？", options:["A.静态","B.连续画面","C.音频","D.代码"], answer:"B"}
+],
+
+"艺术概论":[
+{q:"艺术的核心是？", options:["A.表达","B.技术","C.数据","D.工具"], answer:"A"}
+]
+
 };
 
-let currentSubject = "界面设计";
-let originalQuestions = [...subjects[currentSubject]];
-let questions = [...originalQuestions];
+let currentSubject = "";
+let originalQuestions = [];
+let questions = [];
 let index = 0;
 let wrong = [];
 
+function selectSubject(sub){
+currentSubject = sub;
+originalQuestions = [...subjects[sub]];
+questions = [...originalQuestions];
+index = 0;
+wrong = [];
+loadQuestion();
+}
+
 function loadQuestion(){
+if(!questions.length){
+document.getElementById("question").innerText="暂无题目";
+return;
+}
+
 document.getElementById("subject").innerText = currentSubject;
 document.getElementById("progress").innerText = `第 ${index+1} / ${questions.length} 题`;
 document.getElementById("question").innerText = questions[index].q;
@@ -87,8 +119,6 @@ wrong = [];
 index = 0;
 loadQuestion();
 }
-
-loadQuestion();
 
 </script>
 
