@@ -1,126 +1,115 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-<meta charset="UTF-8">
-<title>刷题系统</title>
-</head>
-<body>
-
-<h2>选择科目</h2>
-
-<button onclick="selectSubject('界面设计')">界面设计</button>
-<button onclick="selectSubject('数字影像')">数字影像</button>
-<button onclick="selectSubject('电脑动画')">电脑动画</button>
-<button onclick="selectSubject('艺术概论')">艺术概论</button>
-
-<hr>
-
-<h3 id="subject"></h3>
-<p id="progress"></p>
-<p id="question"></p>
-<div id="options"></div>
-
-<br>
-<button onclick="prevQuestion()">上一题</button>
-<button onclick="nextQuestion()">下一题</button>
-<button onclick="showWrong()">错题模式</button>
-<button onclick="reset()">返回题库</button>
-
-<p id="result"></p>
-
-<script>
-
 let subjects = {
 
 "界面设计":[
-{q:"Sketch是一款什么工具？", options:["A.位图","B.矢量","C.修图","D.3D"], answer:"B"},
-{q:"Sketch文件后缀是？", options:["A.GIF","B.TIFF","C.sketch","D.PSD"], answer:"C"}
+{q:"Sketch是一款什么工具？",options:["A.位图","B.矢量","C.修图","D.3D"],answer:"B"},
+{q:"Artboard快捷键是？",options:["A.A","B.B","C.C","D.D"],answer:"A"},
+{q:"UI设计核心是？",options:["A.用户体验","B.代码","C.数据库","D.服务器"],answer:"A"},
+{q:"视觉层级作用？",options:["A.引导用户","B.混乱","C.复杂","D.无用"],answer:"A"},
+{q:"响应式设计核心？",options:["A.适配设备","B.固定尺寸","C.颜色统一","D.字体统一"],answer:"A"},
+{q:"交互设计关注？",options:["A.用户流程","B.颜色","C.字体","D.图片"],answer:"A"},
+{q:"设计规范作用？",options:["A.统一风格","B.增加复杂","C.减少效率","D.无用"],answer:"A"},
+{q:"按钮设计重点？",options:["A.可点击性","B.复杂","C.隐藏","D.无用"],answer:"A"},
+{q:"留白作用？",options:["A.提升阅读","B.浪费","C.复杂","D.无用"],answer:"A"},
+{q:"视觉设计目的？",options:["A.表达信息","B.混乱","C.复杂","D.无用"],answer:"A"},
+{q:"设计稿交付对象？",options:["A.开发","B.用户","C.老板","D.市场"],answer:"A"},
+{q:"组件化设计优点？",options:["A.复用","B.复杂","C.无用","D.慢"],answer:"A"},
+{q:"页面布局原则？",options:["A.清晰","B.混乱","C.复杂","D.随意"],answer:"A"},
+{q:"用户研究目的？",options:["A.了解需求","B.无用","C.复杂","D.混乱"],answer:"A"},
+{q:"交互设计原则？",options:["A.简单","B.复杂","C.混乱","D.无用"],answer:"A"},
+{q:"视觉对比作用？",options:["A.突出重点","B.混乱","C.无用","D.复杂"],answer:"A"},
+{q:"UI设计流程？",options:["A.调研→设计→测试","B.编码","C.删除","D.无序"],answer:"A"},
+{q:"设计趋势作用？",options:["A.参考","B.盲从","C.无用","D.复杂"],answer:"A"},
+{q:"用户留存关键？",options:["A.体验","B.广告","C.复杂","D.无用"],answer:"A"},
+{q:"UX指？",options:["A.用户体验","B.用户界面","C.代码","D.设计"],answer:"A"},
+{q:"界面设计不包括？",options:["A.代码","B.布局","C.交互","D.视觉"],answer:"A"},
+{q:"设计工具不包括？",options:["A.Sketch","B.Figma","C.PS","D.Excel"],answer:"D"},
+{q:"设计目标核心？",options:["A.用户","B.公司","C.技术","D.数据"],answer:"A"},
+{q:"视觉传达作用？",options:["A.表达信息","B.混乱","C.复杂","D.无用"],answer:"A"},
+{q:"设计原则包括？",options:["A.对齐","B.重复","C.对比","D.以上都是"],answer:"D"}
 ],
 
 "数字影像":[
-{q:"Photoshop主要处理什么？", options:["A.视频","B.音频","C.图像","D.3D"], answer:"C"}
+{q:"低角度拍摄效果？",options:["A.强大","B.弱小","C.普通","D.无效"],answer:"A"},
+{q:"匹配剪辑核心？",options:["A.动作衔接","B.颜色","C.亮度","D.格式"],answer:"A"},
+{q:"视频压缩作用？",options:["A.减少数据","B.增加体积","C.增加颜色","D.无用"],answer:"A"},
+{q:"暗调影调特点？",options:["A.偏暗","B.偏亮","C.柔和","D.无变化"],answer:"A"},
+{q:"抠像原理？",options:["A.颜色分离","B.剪切","C.复制","D.移动"],answer:"A"},
+{q:"视听语言包括？",options:["A.镜头","B.声音","C.构图","D.以上都是"],answer:"D"},
+{q:"前期制作包括？",options:["A.脚本","B.分镜","C.筹备","D.以上都是"],answer:"D"},
+{q:"影像风格由谁决定？",options:["A.创作者","B.设备","C.软件","D.格式"],answer:"A"},
+{q:"视频分辨率指？",options:["A.清晰度","B.音量","C.颜色","D.时间"],answer:"A"},
+{q:"剪辑作用？",options:["A.连接镜头","B.删除视频","C.增加文件","D.无用"],answer:"A"},
+{q:"镜头类型包括？",options:["A.远景","B.中景","C.近景","D.以上都是"],answer:"D"},
+{q:"色彩作用？",options:["A.表达情绪","B.无用","C.复杂","D.混乱"],answer:"A"},
+{q:"视频帧率指？",options:["A.画面数量","B.声音","C.颜色","D.大小"],answer:"A"},
+{q:"声音设计作用？",options:["A.增强体验","B.删除视频","C.减少效果","D.无用"],answer:"A"},
+{q:"视频格式作用？",options:["A.存储","B.播放","C.传输","D.以上都是"],answer:"D"},
+{q:"影像构图原则？",options:["A.平衡","B.对称","C.层次","D.以上都是"],answer:"D"},
+{q:"光影作用？",options:["A.塑造氛围","B.无用","C.混乱","D.复杂"],answer:"A"},
+{q:"剪辑节奏？",options:["A.快慢变化","B.颜色","C.大小","D.无用"],answer:"A"},
+{q:"镜头运动？",options:["A.推拉摇移","B.静止","C.无用","D.复杂"],answer:"A"},
+{q:"视频编码？",options:["A.压缩处理","B.删除","C.增加","D.无用"],answer:"A"},
+{q:"后期制作包括？",options:["A.剪辑","B.特效","C.调色","D.以上都是"],answer:"D"},
+{q:"调色作用？",options:["A.统一风格","B.无用","C.复杂","D.混乱"],answer:"A"},
+{q:"视频输出？",options:["A.导出","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"分镜作用？",options:["A.规划画面","B.删除","C.无用","D.复杂"],answer:"A"},
+{q:"视频主题？",options:["A.核心内容","B.无用","C.复杂","D.混乱"],answer:"A"}
 ],
 
 "电脑动画":[
-{q:"动画的本质是？", options:["A.静态","B.连续画面","C.音频","D.代码"], answer:"B"}
+{q:"视觉暂留提出者？",options:["A.罗杰特","B.雷诺","C.布莱克顿","D.迪士尼"],answer:"A"},
+{q:"第一个动画片？",options:["A.滑稽脸","B.斑比","C.米老鼠","D.小飞象"],answer:"A"},
+{q:"动画本质？",options:["A.连续画面","B.静态","C.声音","D.代码"],answer:"A"},
+{q:"关键帧作用？",options:["A.控制动画","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画类型？",options:["A.2D","B.3D","C.定格","D.以上都是"],answer:"D"},
+{q:"动画节奏？",options:["A.速度变化","B.颜色","C.音量","D.分辨率"],answer:"A"},
+{q:"帧率指？",options:["A.每秒画面数","B.音频","C.颜色","D.大小"],answer:"A"},
+{q:"动画软件不包括？",options:["A.Maya","B.Blender","C.Excel","D.AE"],answer:"C"},
+{q:"角色设计？",options:["A.形象设计","B.代码","C.服务器","D.数据库"],answer:"A"},
+{q:"动画流程？",options:["A.设计→制作→输出","B.编码","C.删除","D.无序"],answer:"A"},
+{q:"补间动画？",options:["A.自动生成","B.手动绘制","C.删除","D.无用"],answer:"A"},
+{q:"骨骼动画？",options:["A.控制动作","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"渲染作用？",options:["A.生成画面","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画循环？",options:["A.重复播放","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画时间轴？",options:["A.控制时间","B.颜色","C.声音","D.无用"],answer:"A"},
+{q:"运动规律？",options:["A.真实感","B.无用","C.混乱","D.复杂"],answer:"A"},
+{q:"角色绑定？",options:["A.骨骼控制","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画渲染格式？",options:["A.视频","B.图片","C.序列帧","D.以上都是"],answer:"D"},
+{q:"动画镜头？",options:["A.构图","B.颜色","C.声音","D.无用"],answer:"A"},
+{q:"动画效果？",options:["A.增强表现","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画设计？",options:["A.创意","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画输出？",options:["A.导出","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画帧？",options:["A.单张画面","B.声音","C.颜色","D.无用"],answer:"A"},
+{q:"关键帧动画？",options:["A.控制变化","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"动画表现？",options:["A.视觉效果","B.删除","C.隐藏","D.无用"],answer:"A"}
 ],
 
 "艺术概论":[
-{q:"艺术的核心是？", options:["A.表达","B.技术","C.数据","D.工具"], answer:"A"}
+{q:"艺术核心是？",options:["A.表达","B.技术","C.数据","D.工具"],answer:"A"},
+{q:"艺术价值来源？",options:["A.文化","B.市场","C.个人","D.以上都是"],answer:"D"},
+{q:"艺术类型包括？",options:["A.绘画","B.雕塑","C.音乐","D.以上都是"],answer:"D"},
+{q:"艺术功能？",options:["A.审美","B.表达","C.教育","D.以上都是"],answer:"D"},
+{q:"艺术创作核心？",options:["A.创意","B.复制","C.模仿","D.无用"],answer:"A"},
+{q:"现代艺术特点？",options:["A.多样","B.单一","C.固定","D.传统"],answer:"A"},
+{q:"艺术流派？",options:["A.印象派","B.抽象派","C.现实主义","D.以上都是"],answer:"D"},
+{q:"艺术传播方式？",options:["A.展览","B.媒体","C.网络","D.以上都是"],answer:"D"},
+{q:"艺术评价主体？",options:["A.专家","B.大众","C.市场","D.以上都是"],answer:"D"},
+{q:"艺术本质？",options:["A.精神表达","B.技术","C.数据","D.工具"],answer:"A"},
+{q:"艺术欣赏？",options:["A.感受作品","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术创作？",options:["A.表达思想","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术表现？",options:["A.形式语言","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术审美？",options:["A.感知美","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术教育？",options:["A.培养审美","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术市场？",options:["A.交易","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术历史？",options:["A.发展过程","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术形式？",options:["A.表现方式","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术内容？",options:["A.表达意义","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术批评？",options:["A.评价作品","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术风格？",options:["A.表现特征","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术创新？",options:["A.突破传统","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术价值？",options:["A.文化意义","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术体验？",options:["A.情感共鸣","B.删除","C.隐藏","D.无用"],answer:"A"},
+{q:"艺术表达方式？",options:["A.多样化","B.删除","C.隐藏","D.无用"],answer:"A"}
 ]
 
 };
-
-let currentSubject = "";
-let originalQuestions = [];
-let questions = [];
-let index = 0;
-let wrong = [];
-
-function selectSubject(sub){
-currentSubject = sub;
-originalQuestions = [...subjects[sub]];
-questions = [...originalQuestions];
-index = 0;
-wrong = [];
-loadQuestion();
-}
-
-function loadQuestion(){
-if(!questions.length){
-document.getElementById("question").innerText="暂无题目";
-return;
-}
-
-document.getElementById("subject").innerText = currentSubject;
-document.getElementById("progress").innerText = `第 ${index+1} / ${questions.length} 题`;
-document.getElementById("question").innerText = questions[index].q;
-
-let html="";
-questions[index].options.forEach(opt=>{
-html += `<button onclick="check('${opt[0]}')">${opt}</button><br>`;
-});
-document.getElementById("options").innerHTML = html;
-document.getElementById("result").innerText="";
-}
-
-function check(ans){
-if(ans===questions[index].answer){
-document.getElementById("result").innerText="✅ 正确";
-}else{
-document.getElementById("result").innerText="❌ 错误";
-wrong.push(questions[index]);
-}
-}
-
-function nextQuestion(){
-index++;
-if(index>=questions.length){index=0;}
-loadQuestion();
-}
-
-function prevQuestion(){
-index--;
-if(index<0){index=questions.length-1;}
-loadQuestion();
-}
-
-function showWrong(){
-if(wrong.length>0){
-questions = [...wrong];
-index=0;
-loadQuestion();
-}
-}
-
-function reset(){
-questions = [...originalQuestions];
-wrong = [];
-index = 0;
-loadQuestion();
-}
-
-</script>
-
-</body>
-</html>
